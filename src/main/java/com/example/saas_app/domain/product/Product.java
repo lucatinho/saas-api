@@ -23,12 +23,11 @@ public class Product {
 
     private String name;
     private String description;
-    private Number stock;
-    private Number minimumStock;
-    private Number purchasePrice;
-    private Number salePrice;
+    private Integer stock;
+    private Integer minimumStock;
+    private Integer percentSale;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 }

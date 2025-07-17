@@ -12,10 +12,10 @@ CREATE TABLE IF NOT EXISTS "user"
 
 CREATE TABLE IF NOT EXISTS client
 (
-    id          BIGSERIAL PRIMARY KEY,
-    user_id     UUID,
-    phoneNumber VARCHAR(100) NOT NULL,
-    date        TIMESTAMP    NOT NULL DEFAULT NOW(),
+    id           BIGSERIAL PRIMARY KEY,
+    user_id      UUID,
+    phone_number VARCHAR(100) NOT NULL,
+    date         TIMESTAMP    NOT NULL DEFAULT NOW(),
     FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 
@@ -35,25 +35,25 @@ CREATE TABLE IF NOT EXISTS brand
 
 CREATE TABLE IF NOT EXISTS product
 (
-    id           BIGSERIAL PRIMARY KEY,
-    name         VARCHAR(100) NOT NULL,
-    description  VARCHAR(100) NOT NULL,
-    stock        INTEGER      NOT NULL,
-    minimumStock INTEGER      NOT NULL,
-    percenSale   INTEGER      NOT NULL,
+    id            BIGSERIAL PRIMARY KEY,
+    name          VARCHAR(100) NOT NULL,
+    description   VARCHAR(100) NOT NULL,
+    stock         INTEGER      NOT NULL,
+    minimum_stock INTEGER      NOT NULL,
+    percent_sale  INTEGER      NOT NULL,
 --     purchasePrice DECIMAL(10, 2) NOT NULL,
 --     salePrice DECIMAL(10, 2) NOT NULL,
-    brand_id     BIGSERIAL,
+    brand_id      BIGSERIAL,
     FOREIGN KEY (brand_id) REFERENCES brand (id)
 );
 CREATE TABLE IF NOT EXISTS product_batch
 (
-    id            BIGSERIAL PRIMARY KEY,
-    amount        INTEGER        NOT NULL,
-    purchasePrice DECIMAL(10, 2) NOT NULL,
-    salePrice     DECIMAL(10, 2) NOT NULL,
-    data_compra   TIMESTAMP      NOT NULL DEFAULT NOW(),
-    product_id    BIGSERIAL      NOT NULL,
+    id             BIGSERIAL PRIMARY KEY,
+    amount         INTEGER        NOT NULL,
+    purchase_price DECIMAL(10, 2) NOT NULL,
+    sale_price     DECIMAL(10, 2) NOT NULL,
+    data_compra    TIMESTAMP      NOT NULL DEFAULT NOW(),
+    product_id     BIGSERIAL      NOT NULL,
     FOREIGN KEY (product_id) REFERENCES product (id)
 );
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS sales
 (
     id           BIGSERIAL PRIMARY KEY,
     desconto     DECIMAL(10, 2) NOT NULL,
-    valorTotal   DECIMAL(10, 2) NOT NULL,
+    valor_total  DECIMAL(10, 2) NOT NULL,
     sale_date    TIMESTAMP      NOT NULL DEFAULT NOW(),
     product_id   BIGSERIAL,
     FOREIGN KEY (product_id) REFERENCES product (id),
@@ -100,13 +100,13 @@ CREATE TABLE IF NOT EXISTS os
 (
     id             UUID                    DEFAULT gen_random_uuid() PRIMARY KEY,
     defeito        VARCHAR(100)   NOT NULL,
-    laudoTecnico   VARCHAR(100)   NOT NULL,
+    laudo_tecnico  VARCHAR(100)   NOT NULL,
     status         VARCHAR(100)   NOT NULL,
     observacoes    VARCHAR(100)   NOT NULL,
-    dataCriacao    TIMESTAMP      NOT NULL DEFAULT NOW(),
-    dataInicio     TIMESTAMP      NOT NULL,
-    dataConclusao  TIMESTAMP      NOT NULL,
-    valorTotal     DECIMAL(10, 2) NOT NULL,
+    data_criacao   TIMESTAMP      NOT NULL DEFAULT NOW(),
+    data_inicio    TIMESTAMP      NOT NULL,
+    data_conclusao TIMESTAMP      NOT NULL,
+    valor_total    DECIMAL(10, 2) NOT NULL,
     garantia_meses INTEGER        NOT NULL,
     client_id      BIGSERIAL,
     FOREIGN KEY (client_id) REFERENCES client (id),
