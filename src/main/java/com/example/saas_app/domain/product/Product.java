@@ -1,10 +1,7 @@
 package com.example.saas_app.domain.product;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.saas_app.domain.brand.Brand;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,9 +23,12 @@ public class Product {
 
     private String name;
     private String description;
-//    private String brand;
     private Number stock;
     private Number minimumStock;
     private Number purchasePrice;
     private Number salePrice;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
 }

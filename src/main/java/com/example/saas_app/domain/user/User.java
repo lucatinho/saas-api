@@ -22,7 +22,9 @@ public class User {
 
     private String name;
     private String email;
+    private String password;
+    private Boolean enable;
 
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    private Set<Role> roles;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }
