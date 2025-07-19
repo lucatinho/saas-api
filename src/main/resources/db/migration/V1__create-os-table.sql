@@ -41,8 +41,6 @@ CREATE TABLE IF NOT EXISTS product
     stock         INTEGER      NOT NULL,
     minimum_stock INTEGER      NOT NULL,
     percent_sale  INTEGER      NOT NULL,
---     purchasePrice DECIMAL(10, 2) NOT NULL,
---     salePrice DECIMAL(10, 2) NOT NULL,
     brand_id      BIGSERIAL,
     FOREIGN KEY (brand_id) REFERENCES brand (id)
 );

@@ -1,6 +1,7 @@
 package com.example.saas_app.controller;
 
 import com.example.saas_app.domain.product.Product;
+import com.example.saas_app.domain.product.ProductPatchDTO;
 import com.example.saas_app.domain.product.ProductRequestDTO;
 import com.example.saas_app.domain.product.ProductResponseDTO;
 import com.example.saas_app.service.ProductService;
@@ -22,8 +23,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody ProductRequestDTO body){
+    public ResponseEntity<Product> create(@RequestBody ProductRequestDTO body) {
         Product newProduct = this.productService.createProduct(body);
         return ResponseEntity.ok(newProduct);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody ProductPatchDTO body) {
+        Product product = this.productService.updateProduct(id, body);
+        return ResponseEntity.ok(product);
     }
 }
