@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS brand
     name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS category
+CREATE TABLE IF NOT EXISTS category_prod
 (
     id   BIGSERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL
@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS product
     minimum_stock INTEGER      NOT NULL,
     percent_sale  INTEGER      NOT NULL,
     brand_id      BIGSERIAL,
-    category_id   BIGSERIAL,
+    category_prod_id   BIGSERIAL,
     FOREIGN KEY (brand_id) REFERENCES brand (id),
-    FOREIGN KEY (category_id) REFERENCES category (id)
+    FOREIGN KEY (category_prod_id) REFERENCES category_prod (id)
 );
 CREATE TABLE IF NOT EXISTS product_batch
 (

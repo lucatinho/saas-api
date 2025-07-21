@@ -10,7 +10,7 @@ VALUES ('Samsung'),
        ('Asus'),
        ('Lenovo');
 
-INSERT INTO category (name)
+INSERT INTO category_prod (name)
 VALUES ('Carregadores'),
        ('Películas'),
        ('Capinhas'),

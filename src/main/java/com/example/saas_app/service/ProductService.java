@@ -1,11 +1,13 @@
 package com.example.saas_app.service;
 
 import com.example.saas_app.domain.brand.Brand;
+import com.example.saas_app.domain.category_prod.CategoryProd;
 import com.example.saas_app.domain.product.Product;
 import com.example.saas_app.domain.product.ProductPatchDTO;
 import com.example.saas_app.domain.product.ProductRequestDTO;
 import com.example.saas_app.domain.product.ProductResponseDTO;
 import com.example.saas_app.repositories.BrandRepository;
+import com.example.saas_app.repositories.CategoryProdRepository;
 import com.example.saas_app.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -22,18 +24,24 @@ public class ProductService {
     @Autowired
     private BrandRepository brandRepository;
 
+    @Autowired
+    private CategoryProdRepository categoryProdRepository;
+
     public ProductResponseDTO getProductById(Long id) {
         log.info("[LOG] getProductById");
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id nao encontrado"));
         return new ProductResponseDTO(product.getId(), product.getName(), product.getDescription(),
-                product.getStock(), product.getMinimumStock(), product.getPercentSale(), product.getBrand().getName());
+                product.getStock(), product.getMinimumStock(), product.getPercentSale(), product.getBrand().getName(),
+                product.getCategoryProd().getName());
     }
 
     public Product createProduct(ProductRequestDTO data) {
         log.info("[LOG] createProduct");
         Brand brand = brandRepository.findById(data.brand_id()).orElseThrow(() -> new IllegalArgumentException("Marca nao encontrada."));
+        CategoryProd categoryProd = categoryProdRepository.findById(data.category_prod_id()).orElseThrow(() -> new IllegalArgumentException("Marca nao encontrada."));
         Product newProduct = new Product();
         newProduct.setBrand(brand);
+        newProduct.setCategoryProd(categoryProd);
         newProduct.setName(data.name());
         newProduct.setDescription(data.description());
         newProduct.setStock(data.stock());
@@ -55,6 +63,11 @@ public class ProductService {
         data.brand_id().ifPresent(brandId -> {
             Brand brand = brandRepository.findById(brandId).orElseThrow(() -> new IllegalArgumentException("Marca nao encontrada."));
             product.setBrand(brand);
+        });
+
+        data.category_prod_id().ifPresent(categoryProdId -> {
+            CategoryProd categoryProd = categoryProdRepository.findById(categoryProdId).orElseThrow(() -> new IllegalArgumentException("Marca nao encontrada."));
+            product.setCategoryProd(categoryProd);
         });
 
         return productRepository.save(product);

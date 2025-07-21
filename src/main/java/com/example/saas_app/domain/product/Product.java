@@ -1,6 +1,7 @@
 package com.example.saas_app.domain.product;
 
 import com.example.saas_app.domain.brand.Brand;
+import com.example.saas_app.domain.category_prod.CategoryProd;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -30,4 +31,8 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_prod_id")
+    private CategoryProd categoryProd;
 }
