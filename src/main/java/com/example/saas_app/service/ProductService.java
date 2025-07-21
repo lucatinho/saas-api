@@ -12,7 +12,12 @@ import com.example.saas_app.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -33,6 +38,31 @@ public class ProductService {
         return new ProductResponseDTO(product.getId(), product.getName(), product.getDescription(),
                 product.getStock(), product.getMinimumStock(), product.getPercentSale(), product.getBrand().getName(),
                 product.getCategoryProd().getName());
+    }
+
+    public List<ProductResponseDTO> getProducts(int page, int size, String name) {
+        log.info("[LOG] getProducts by name");
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Product> productPage;
+
+        if (name == null || name.isEmpty()) {
+            productPage = productRepository.findAll(pageable);
+            List<Product> teste = productPage.stream().toList();
+            log.info(teste.toString());
+        } else {
+            productPage = productRepository.findByNameContainingIgnoreCase(name, pageable);
+        }
+
+        return productPage.map(product -> new ProductResponseDTO(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getStock(),
+                product.getMinimumStock(),
+                product.getPercentSale(),
+                product.getBrand().getName(),
+                product.getCategoryProd().getName()
+        )).stream().toList();
     }
 
     public Product createProduct(ProductRequestDTO data) {

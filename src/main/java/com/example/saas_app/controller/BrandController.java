@@ -24,7 +24,10 @@ public class BrandController {
     }
 
     @GetMapping
-    public ResponseEntity<List<BrandResponseDTO>> getBrands(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<BrandResponseDTO>> getBrands(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
         List<BrandResponseDTO> allBrands = this.brandService.getBrands(page, size);
         return ResponseEntity.ok(allBrands);
     }
