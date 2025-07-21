@@ -2,12 +2,16 @@ package com.example.saas_app.domain.product;
 
 import com.example.saas_app.domain.brand.Brand;
 import com.example.saas_app.domain.category_prod.CategoryProd;
+import com.example.saas_app.domain.product_batch.ProductBatch;
 import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Table(name = "product")
@@ -35,4 +39,8 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_prod_id")
     private CategoryProd categoryProd;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    //    @JoinColumn(name = "product_batch_id")
+    private List<ProductBatch> productBatch = new ArrayList<>();
 }
