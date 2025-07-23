@@ -41,6 +41,5 @@ public class Product {
     private CategoryProd categoryProd;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    //    @JoinColumn(name = "product_batch_id")
     private List<ProductBatch> productBatch = new ArrayList<>();
 }

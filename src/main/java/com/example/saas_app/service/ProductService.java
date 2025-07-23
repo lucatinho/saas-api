@@ -6,6 +6,7 @@ import com.example.saas_app.domain.product.Product;
 import com.example.saas_app.domain.product.ProductPatchDTO;
 import com.example.saas_app.domain.product.ProductRequestDTO;
 import com.example.saas_app.domain.product.ProductResponseDTO;
+import com.example.saas_app.mapper.ProductMapper;
 import com.example.saas_app.repositories.BrandRepository;
 import com.example.saas_app.repositories.CategoryProdRepository;
 import com.example.saas_app.repositories.ProductRepository;
@@ -32,12 +33,13 @@ public class ProductService {
     @Autowired
     private CategoryProdRepository categoryProdRepository;
 
+    @Autowired
+    private ProductMapper productMapper;
+
     public ProductResponseDTO getProductById(Long id) {
         log.info("[LOG] getProductById");
         Product product = productRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id nao encontrado"));
-        return new ProductResponseDTO(product.getId(), product.getName(), product.getDescription(),
-                product.getStock(), product.getMinimumStock(), product.getPercentSale(), product.getBrand().getName(),
-                product.getCategoryProd().getName());
+        return productMapper.toResponseDTO(product);
     }
 
     public List<ProductResponseDTO> getProducts(int page, int size, String name) {
@@ -53,16 +55,7 @@ public class ProductService {
             productPage = productRepository.findByNameContainingIgnoreCase(name, pageable);
         }
 
-        return productPage.map(product -> new ProductResponseDTO(
-                product.getId(),
-                product.getName(),
-                product.getDescription(),
-                product.getStock(),
-                product.getMinimumStock(),
-                product.getPercentSale(),
-                product.getBrand().getName(),
-                product.getCategoryProd().getName()
-        )).stream().toList();
+        return productPage.stream().map(productMapper::toResponseDTO).toList();
     }
 
     public Product createProduct(ProductRequestDTO data) {

@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS product
     FOREIGN KEY (brand_id) REFERENCES brand (id),
     FOREIGN KEY (category_prod_id) REFERENCES category_prod (id)
 );
+
 CREATE TABLE IF NOT EXISTS product_batch
 (
     id             BIGSERIAL PRIMARY KEY,
