@@ -61,15 +61,10 @@ public class ProductService {
     public Product createProduct(ProductRequestDTO data) {
         log.info("[LOG] createProduct");
         Brand brand = brandRepository.findById(data.brand_id()).orElseThrow(() -> new IllegalArgumentException("Marca nao encontrada."));
-        CategoryProd categoryProd = categoryProdRepository.findById(data.category_prod_id()).orElseThrow(() -> new IllegalArgumentException("Marca nao encontrada."));
-        Product newProduct = new Product();
+        CategoryProd categoryProd = categoryProdRepository.findById(data.category_prod_id()).orElseThrow(() -> new IllegalArgumentException("Categoria nao encontrada."));
+        Product newProduct = productMapper.toEntity(data);
         newProduct.setBrand(brand);
         newProduct.setCategoryProd(categoryProd);
-        newProduct.setName(data.name());
-        newProduct.setDescription(data.description());
-        newProduct.setStock(data.stock());
-        newProduct.setMinimumStock(data.minimumStock());
-        newProduct.setPercentSale(data.percentSale());
 
         return productRepository.save(newProduct);
     }
@@ -89,7 +84,7 @@ public class ProductService {
         });
 
         data.category_prod_id().ifPresent(categoryProdId -> {
-            CategoryProd categoryProd = categoryProdRepository.findById(categoryProdId).orElseThrow(() -> new IllegalArgumentException("Marca nao encontrada."));
+            CategoryProd categoryProd = categoryProdRepository.findById(categoryProdId).orElseThrow(() -> new IllegalArgumentException("Categoria nao encontrada."));
             product.setCategoryProd(categoryProd);
         });
 
