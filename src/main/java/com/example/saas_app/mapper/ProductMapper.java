@@ -1,11 +1,12 @@
 package com.example.saas_app.mapper;
 
+
 import com.example.saas_app.domain.product.Product;
 import com.example.saas_app.domain.product.ProductRequestDTO;
 import com.example.saas_app.domain.product.ProductResponseDTO;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", uses =  {ProductBatchMapper.class})
+@Mapper(componentModel = "spring", uses = {ProductBatchMapper.class})
 public interface ProductMapper {
 
     @Mapping(target = "brand", ignore = true)

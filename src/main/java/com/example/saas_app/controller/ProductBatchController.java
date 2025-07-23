@@ -1,6 +1,5 @@
 package com.example.saas_app.controller;
 
-import com.example.saas_app.domain.product_batch.ProductBatch;
 import com.example.saas_app.domain.product_batch.ProductBatchRequestDTO;
 import com.example.saas_app.domain.product_batch.ProductBatchResponseDTO;
 import com.example.saas_app.service.ProductBatchService;
@@ -22,8 +21,8 @@ public class ProductBatchController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductBatch> create(@RequestBody ProductBatchRequestDTO body) {
-        ProductBatch productBatch = this.productBatchService.create(body);
+    public ResponseEntity<ProductBatchResponseDTO> create(@RequestBody ProductBatchRequestDTO body) {
+        ProductBatchResponseDTO productBatch = this.productBatchService.create(body);
         return ResponseEntity.ok(productBatch);
     }
 }
