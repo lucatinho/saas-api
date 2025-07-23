@@ -10,7 +10,8 @@ import com.example.saas_app.repositories.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 @Service
 public class ProductBatchService {
@@ -30,7 +31,14 @@ public class ProductBatchService {
         return productBatchMapper.toProductBatchResponseDto(productBatch);
     }
 
-    public ProductBatchResponseDTO create(@RequestBody ProductBatchRequestDTO data) {
+    public List<ProductBatchResponseDTO> getAllProductBatches(Long product_id) {
+        List<ProductBatch> batches = productBatchRepository.findByProductId(product_id);
+        return batches.stream()
+                .map(productBatchMapper::toProductBatchResponseDto)
+                .toList();
+    }
+
+    public ProductBatchResponseDTO create(ProductBatchRequestDTO data) {
         Product product = productRepository.findById(data.product_id()).orElseThrow(() -> new IllegalArgumentException("Produto nao encontrado."));
         ProductBatch productBatch = productBatchMapper.toEntity(data);
         productBatch.setProduct(product);
@@ -38,5 +46,14 @@ public class ProductBatchService {
         productBatchRepository.save(productBatch);
 
         return productBatchMapper.toProductBatchResponseDto(productBatch);
+    }
+
+    public ProductBatchResponseDTO update(Long id, ProductBatchRequestDTO data) {
+        ProductBatch existingBatch = productBatchRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id nao encontrado"));
+        Product product = productRepository.findById(data.product_id()).orElseThrow(() -> new IllegalArgumentException("Produto nao encontrado."));
+        productBatchMapper.updateProductBatchFromDto(data, existingBatch);
+        existingBatch.setProduct(product);
+        productBatchRepository.save(existingBatch);
+        return productBatchMapper.toProductBatchResponseDto(existingBatch);
     }
 }
